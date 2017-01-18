@@ -137,7 +137,6 @@ app.post('/assetbundle', function(req, res, next){
             console.log("TESTING = ", bundle);
             // Stop watching once promise is fulfilled
             stalker.close()
-            stalker = null;
             console.log("the bundle is", bundle);
             // res.json({ "message": "built the thing!"});
             res.sendFile(bundle, {'root': '..\\Unity-Technologies-assetbundledemo\\demo\\AssetBundles\\Windows\\'});
