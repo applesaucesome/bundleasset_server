@@ -26,7 +26,7 @@ var express = require('express'),
 function handleAssetBundlePromise(board) {
     console.log("handleAssetBundlePromise==", board)
     
-    var command = '"C:\\Program Files\\Unity\\Editor\\Unity.exe" -batchMode -quit -projectPath "C:\\Users\\\David Barto\\Desktop\\Unity-Technologies-assetbundledemo\\demo" BOARDNAME=' + board.name + ' MODELS=' + board.models + ' -executeMethod "AssetBundles.BuildScript.BuildAssetBundles"';
+    var command = '"C:\\Program Files\\Unity\\Editor\\Unity.exe" BOARDNAME=' + board.name + ' MODELS=' + board.models + ' -batchMode -quit -projectPath "C:\\Users\\\David Barto\\Desktop\\Unity-Technologies-assetbundledemo\\demo" -executeMethod "AssetBundles.BuildScript.BuildAssetBundles"';
     console.log("COMMAND==", command);
     console.log("MODELS==", board.models);
     cmd.run(command);
@@ -61,6 +61,7 @@ function StalkerInit(board, res, rej){
                     console.log('===UPDATE=== the file', fileName, 'was updated', currentStat, previousStat);
                     // Resolve promise
                     res(fileName);
+
                 }
                 break;
 
@@ -136,10 +137,11 @@ app.post('/assetbundle', function(req, res, next){
             console.log("TESTING = ", bundle);
             // Stop watching once promise is fulfilled
             stalker.close()
+            stalker = null;
             console.log("the bundle is", bundle);
-            res.json({ "message": "built the thing!"});
+            // res.json({ "message": "built the thing!"});
+            res.sendFile(bundle, {'root': '..\\Unity-Technologies-assetbundledemo\\demo\\AssetBundles\\Windows\\'});
         })
-        .then()
         .catch(function(err) {
             console.log("ERROR=", err);
             res.json({ "message": "ERROR!"});
